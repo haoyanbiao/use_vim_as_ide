@@ -1,5 +1,7 @@
 " 更新时间：2016-03-30 12:15:21
 
+" 关闭兼容模式
+set nocompatible
 " 定义快捷键的前缀，即 <Leader>
 let mapleader=";"
 
@@ -10,7 +12,6 @@ let mapleader=";"
 filetype on
 " 根据侦测到的不同类型加载对应的插件
 filetype plugin on
-
 " <<
 
 " >>
@@ -49,11 +50,14 @@ nnoremap <Leader>jw <C-W>j
 " 定义快捷键在结对符之间跳转
 nmap <Leader>M %
 
+inoremap <Leader>v <esc>
+cnoremap <Leader>v <esc>
 " <<
 
 " 让配置变更立即生效
 autocmd BufWritePost $MYVIMRC source $MYVIMRC
-
+let &t_TI = ""
+let &t_TE = ""
 " >>
 " 其他
 
@@ -63,8 +67,6 @@ set incsearch
 " 搜索时大小写不敏感
 set ignorecase
 
-" 关闭兼容模式
-set nocompatible
 
 " vim 自身命令行模式智能补全
 set wildmenu
@@ -86,7 +88,8 @@ Plugin 'tomasr/molokai'
 Plugin 'vim-scripts/phd'
 Plugin 'Lokaltog/vim-powerline'
 Plugin 'octol/vim-cpp-enhanced-highlight'
-Plugin 'nathanaelkane/vim-indent-guides'
+"Plugin 'nathanaelkane/vim-indent-guides'
+Plugin 'Yggdroot/indentLine'
 Plugin 'derekwyatt/vim-fswitch'
 Plugin 'kshenoy/vim-signature'
 Plugin 'vim-scripts/BOOKMARKS--Mark-and-Highlight-Full-Lines'
@@ -100,6 +103,7 @@ Plugin 'scrooloose/nerdcommenter'
 Plugin 'vim-scripts/DrawIt'
 Plugin 'SirVer/ultisnips'
 Plugin 'Valloric/YouCompleteMe'
+"Plugin 'rip-rip/clang_complete'
 Plugin 'derekwyatt/vim-protodef'
 Plugin 'scrooloose/nerdtree'
 Plugin 'fholgado/minibufexpl.vim'
@@ -107,8 +111,9 @@ Plugin 'gcmt/wildfire.vim'
 Plugin 'sjl/gundo.vim'
 Plugin 'Lokaltog/vim-easymotion'
 Plugin 'suan/vim-instant-markdown'
-Plugin 'lilydjwg/fcitx.vim'
-
+Plugin 'jiangmiao/auto-pairs'
+"Plugin 'lilydjwg/fcitx.vim'
+"Plugin 'ludovicchabant/vim-gutentags'
 " 插件列表结束
 call vundle#end()
 filetype plugin indent on
@@ -116,8 +121,8 @@ filetype plugin indent on
 
 " 配色方案
 set background=dark
-colorscheme solarized
-"colorscheme molokai
+"colorscheme solarized
+colorscheme molokai
 "colorscheme phd
 
 " >>
@@ -199,23 +204,23 @@ syntax on
 filetype indent on
 
 " 将制表符扩展为空格
-set expandtab
+"set expandtab
 " 设置编辑时制表符占用空格数
-set tabstop=4
+"set tabstop=4
 " 设置格式化时制表符占用空格数
-set shiftwidth=4
+"set shiftwidth=4
 " 让 vim 把连续数量的空格视为一个制表符
-set softtabstop=4
+"set softtabstop=4
 
 " 缩进可视化插件 Indent Guides
 " 随 vim 自启动
-let g:indent_guides_enable_on_vim_startup=1
+"let g:indent_guides_enable_on_vim_startup=1
 " 从第二层开始可视化显示缩进
-let g:indent_guides_start_level=2
+"let g:indent_guides_start_level=2
 " 色块宽度
-let g:indent_guides_guide_size=1
+"let g:indent_guides_guide_size=1
 " 快捷键 i 开/关缩进可视化
-nmap <silent> <Leader>i <Plug>IndentGuidesToggle
+"nmap <silent> <Leader>i <Plug>IndentGuidesToggle
 
 " <<
 
@@ -223,8 +228,8 @@ nmap <silent> <Leader>i <Plug>IndentGuidesToggle
 " 代码折叠
 
 " 基于缩进或语法进行代码折叠
-"set foldmethod=indent
-set foldmethod=syntax
+set foldmethod=indent
+"set foldmethod=syntax
 " 启动 vim 时关闭折叠代码
 set nofoldenable
 
@@ -280,18 +285,28 @@ let tagbar_width=32
 " tagbar 子窗口中不显示冗余帮助信息
 let g:tagbar_compact=1
 " 设置 ctags 对哪些代码标识符生成标签
-let g:tagbar_type_cpp = {
-     \ 'ctagstype' : 'c++',
+"let g:tagbar_type_c = {
+			"\ 'kinds' : [
+			"\ 'p:prototypes:1:0',
+			"\ 'g:enums',
+			"\ 'e:enumerators:0:0',
+			"\ 't:typedefs:0:0',
+			"\ 's:structs',
+			"\ 'u:unions',
+			"\ 'm:members:0:0',
+			"\ 'v:variables:0:0',
+			"\ 'f:functions:0:0',
+			"\ ],
+			"\ }
+let g:tagbar_type_c = {
+     \ 'ctagstype' : 'c',
      \ 'kinds'     : [
          \ 'c:classes:0:1',
-         \ 'd:macros:0:1',
          \ 'e:enumerators:0:0', 
          \ 'f:functions:0:1',
          \ 'g:enumeration:0:1',
-         \ 'l:local:0:1',
          \ 'm:members:0:1',
          \ 'n:namespaces:0:1',
-         \ 'p:functions_prototypes:0:1',
          \ 's:structs:0:1',
          \ 't:typedefs:0:1',
          \ 'u:unions:0:1',
@@ -315,6 +330,40 @@ let g:tagbar_type_cpp = {
      \ }
 \ }
 
+"let g:tagbar_type_c = {
+     "\ 'ctagstype' : 'c',
+     "\ 'kinds'     : [
+         "\ 'c:classes:0:1',
+         "\ 'd:macros:0:1',
+         "\ 'e:enumerators:0:0', 
+         "\ 'f:functions:0:1',
+         "\ 'g:enumeration:0:1',
+         "\ 'l:local:0:1',
+         "\ 'm:members:0:1',
+         "\ 'n:namespaces:0:1',
+         "\ 'p:functions_prototypes:0:1',
+         "\ 's:structs:0:1',
+         "\ 't:typedefs:0:1',
+         "\ 'u:unions:0:1',
+         "\ 'v:global:0:1',
+         "\ 'x:external:0:1'
+     "\ ],
+     "\ 'sro'        : '::',
+     "\ 'kind2scope' : {
+         "\ 'g' : 'enum',
+         "\ 'n' : 'namespace',
+         "\ 'c' : 'class',
+         "\ 's' : 'struct',
+         "\ 'u' : 'union'
+     "\ },
+     "\ 'scope2kind' : {
+         "\ 'enum'      : 'g',
+         "\ 'namespace' : 'n',
+         "\ 'class'     : 'c',
+         "\ 'struct'    : 's',
+         "\ 'union'     : 'u'
+     "\ }
+"\ }
 " <<
 
 " >>
@@ -325,8 +374,13 @@ let g:tagbar_type_cpp = {
 " 设置插件 indexer 调用 ctags 的参数
 " 默认 --c++-kinds=+p+l，重新设置为 --c++-kinds=+l+p+x+c+d+e+f+g+m+n+s+t+u+v
 " 默认 --fields=+iaS 不满足 YCM 要求，需改为 --fields=+iaSl
-let g:indexer_ctagsCommandLineOptions="--c++-kinds=+l+p+x+c+d+e+f+g+m+n+s+t+u+v --fields=+iaSl --extra=+q"
-
+"let g:indexer_ctagsCommandLineOptions="--c-kinds=+m+f+s+v --fields=+iaSl --extra"
+let g:indexer_ctagsCommandLineOptions="-R --language-force=c --c-kinds=+m+f+s+v+p --fields=+iaSl --exclude=lib --exclude=.*  --exclude=/home/goodyb/mi_repository/miio_bt_builder/mible_common/Example_Project/* --exclude=/home/goodyb/mi_repository/miio_bt_builder/mible_common/build_dir/*  --exclude=/home/goodyb/mi_repository/miio_bt_builder/mible_common/output/*"
+"let g:indexer_ctagsWriteFilelist=1
+"let g:indexer_ctagsJustAppendTagsAtFileSave=1
+"let g:indexer_backgroundDisabled=0
+"let g:indexer_debugLogLevel=1
+"let g:indexer_disableCtagsWarning=1
 " 正向遍历同名标签
 nmap <Leader>tn :tnext<CR>
 " 反向遍历同名标签
@@ -339,12 +393,14 @@ nnoremap <leader>jc :YcmCompleter GoToDeclaration<CR>
 nnoremap <leader>jd :YcmCompleter GoToDefinition<CR>
 
 " <<
-
+"let g:clang_library_path='/usr/lib/llvm-6.0/lib'
 " >>
 " 查找
 
 " 使用 ctrlsf.vim 插件在工程内全局查找光标所在关键字，设置快捷键。快捷键速记法：search in project
 nnoremap <Leader>sp :CtrlSF<CR>
+nnoremap <Leader>si :CtrlSF<space>
+"let g:ctrlsf_default_view_mode = 'compact'
 
 " <<
 
@@ -401,13 +457,33 @@ let g:UltiSnipsJumpBackwardTrigger="<leader><s-tab>"
 
 " YCM 补全菜单配色
 " 菜单
-highlight Pmenu ctermfg=2 ctermbg=3 guifg=#005f87 guibg=#EEE8D5
+highlight Pmenu ctermfg=0 ctermbg=242 guifg=black guibg=darkgrey
 " 选中项
-highlight PmenuSel ctermfg=2 ctermbg=3 guifg=#AFD700 guibg=#106900
-
+highlight PmenuSel ctermfg=242 ctermbg=8 guifg=darkgrey guibg=black
+let g:ycm_semantic_triggers =  {
+  \   'c' : ['->', '.'],
+  \   'objc' : ['->', '.', 're!\[[_a-zA-Z]+\w*\s', 're!^\s*[^\W\d]\w*\s',
+  \             're!\[.*\]\s'],
+  \   'ocaml' : ['.', '#'],
+  \   'cpp,objcpp' : ['->', '.', '::'],
+  \   'perl' : ['->'],
+  \   'php' : ['->', '::'],
+  \   'cs,java,javascript,typescript,d,python,perl6,scala,vb,elixir,go' : ['.'],
+  \   'ruby' : ['.', '::'],
+  \   'lua' : ['.', ':'],
+  \   'erlang' : [':'],
+  \ }
+let g:ycm_semantic_triggers =  {
+            \ 'c,cpp,python,java,go,erlang,perl': ['re!\w{2}'],
+            \ 'cs,lua,javascript': ['re!\w{2}'],
+            \ }
 " 补全功能在注释中同样有效
-let g:ycm_complete_in_comments=1
-
+let g:ycm_complete_in_comments=0
+"let g:ycm_use_clangd = 0
+let g:ycm_global_ycm_extra_conf = '~/.ycm_extra_conf.py'
+"set completeopt=longest,menu
+"autocmd InsertLeave * if pumvisible() == 0|pclose|endif
+"let g:ycm_complete_in_strings = 1
 " 允许 vim 加载 .ycm_extra_conf.py 文件，不再提示
 let g:ycm_confirm_extra_conf=0
 
@@ -432,6 +508,8 @@ let g:ycm_cache_omnifunc=0
 " 语法关键字补全
 let g:ycm_seed_identifiers_with_syntax=1
 
+let g:ycm_server_python_interpreter='/usr/bin/python3'
+let g:ycm_global_ycm_extra_conf='~/.ycm_extra_conf.py'
 " <<
  
 " >>
