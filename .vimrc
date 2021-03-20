@@ -1,5 +1,7 @@
 " 更新时间：2016-03-30 12:15:21
 
+" 关闭兼容模式
+set nocompatible
 " 定义快捷键的前缀，即 <Leader>
 let mapleader=","
 
@@ -54,7 +56,8 @@ cnoremap <Leader>v <esc>
 
 " 让配置变更立即生效
 autocmd BufWritePost $MYVIMRC source $MYVIMRC
-
+let &t_TI = ""
+let &t_TE = ""
 " >>
 " 其他
 
@@ -64,8 +67,6 @@ set incsearch
 " 搜索时大小写不敏感
 set ignorecase
 
-" 关闭兼容模式
-set nocompatible
 
 " vim 自身命令行模式智能补全
 set wildmenu
@@ -76,22 +77,24 @@ set wildmenu
 " 插件安装
 
 " vundle 环境设置
-"filetype off
+filetype off
 set rtp+=~/.vim/bundle/Vundle.vim
 " vundle 管理的插件列表必须位于 vundle#begin() 和 vundle#end() 之间
 call vundle#begin()
-"Plugin 'esukram/taglist-vim'
-Plugin 'vim-scripts/taglist.vim'
+
 Plugin 'VundleVim/Vundle.vim'
 Plugin 'altercation/vim-colors-solarized'
 Plugin 'tomasr/molokai'
 Plugin 'vim-scripts/phd'
 Plugin 'Lokaltog/vim-powerline'
-"Plugin 'octol/vim-cpp-enhanced-highlight'
+Plugin 'octol/vim-cpp-enhanced-highlight'
+"Plugin 'nathanaelkane/vim-indent-guides'
 Plugin 'Yggdroot/indentLine'
 Plugin 'derekwyatt/vim-fswitch'
 Plugin 'kshenoy/vim-signature'
 Plugin 'vim-scripts/BOOKMARKS--Mark-and-Highlight-Full-Lines'
+Plugin 'majutsushi/tagbar'
+"Plugin 'vim-scripts/indexer.tar.gz'
 Plugin 'vim-scripts/DfrankUtil'
 Plugin 'vim-scripts/vimprj'
 Plugin 'dyng/ctrlsf.vim'
@@ -100,16 +103,19 @@ Plugin 'scrooloose/nerdcommenter'
 Plugin 'vim-scripts/DrawIt'
 Plugin 'SirVer/ultisnips'
 Plugin 'Valloric/YouCompleteMe'
-Plugin 'rip-rip/clang_complete'
+"Plugin 'rip-rip/clang_complete'
 Plugin 'derekwyatt/vim-protodef'
 Plugin 'scrooloose/nerdtree'
 Plugin 'fholgado/minibufexpl.vim'
 Plugin 'gcmt/wildfire.vim'
 Plugin 'sjl/gundo.vim'
 Plugin 'Lokaltog/vim-easymotion'
-"Plugin 'suan/vim-instant-markdown'
+Plugin 'suan/vim-instant-markdown'
 Plugin 'jiangmiao/auto-pairs'
-Plugin 'lilydjwg/fcitx.vim'
+Plugin 'brookhong/cscope.vim'
+Plugin 'autoload_cscope.vim'
+"Plugin 'hari-rangarajan/CCTree'
+"Plugin 'lilydjwg/fcitx.vim'
 "Plugin 'ludovicchabant/vim-gutentags'
 " 插件列表结束
 call vundle#end()
@@ -146,8 +152,7 @@ endf
 map <silent> <F11> :call ToggleFullscreen()<CR>
 "" 启动 vim 时自动全屏
 "autocmd VimEnter * call ToggleFullscreen()
- nnoremap <Leader>s :TlistToggle<CR>
- "nnoremap <silent> <F8> :TlistToggle<CR>
+
 " <<
 
 " >>
@@ -160,7 +165,6 @@ set laststatus=2
 set ruler
 
 " 开启行号显示
-"set relativenumber
 set number
 
 " 高亮显示当前行/列
@@ -238,7 +242,7 @@ set nofoldenable
 " 接口与实现快速切换
 
 " *.cpp 和 *.h 间切换
-"nmap <silent> <Leader>sw :FSHere<cr>
+nmap <silent> <Leader>sw :FSHere<cr>
 
 " <<
 
@@ -246,29 +250,29 @@ set nofoldenable
 " 代码收藏
 
 " 自定义 vim-signature 快捷键
-"let g:SignatureMap = {
-        "\ 'Leader'             :  "m",
-        "\ 'PlaceNextMark'      :  "m,",
-        "\ 'ToggleMarkAtLine'   :  "m.",
-        "\ 'PurgeMarksAtLine'   :  "m-",
-        "\ 'DeleteMark'         :  "dm",
-        "\ 'PurgeMarks'         :  "mda",
-        "\ 'PurgeMarkers'       :  "m<BS>",
-        "\ 'GotoNextLineAlpha'  :  "']",
-        "\ 'GotoPrevLineAlpha'  :  "'[",
-        "\ 'GotoNextSpotAlpha'  :  "`]",
-        "\ 'GotoPrevSpotAlpha'  :  "`[",
-        "\ 'GotoNextLineByPos'  :  "]'",
-        "\ 'GotoPrevLineByPos'  :  "['",
-        "\ 'GotoNextSpotByPos'  :  "mn",
-        "\ 'GotoPrevSpotByPos'  :  "mp",
-        "\ 'GotoNextMarker'     :  "[+",
-        "\ 'GotoPrevMarker'     :  "[-",
-        "\ 'GotoNextMarkerAny'  :  "]=",
-        "\ 'GotoPrevMarkerAny'  :  "[=",
-        "\ 'ListLocalMarks'     :  "ms",
-        "\ 'ListLocalMarkers'   :  "m?"
-        "\ }
+let g:SignatureMap = {
+        \ 'Leader'             :  "m",
+        \ 'PlaceNextMark'      :  "m,",
+        \ 'ToggleMarkAtLine'   :  "m.",
+        \ 'PurgeMarksAtLine'   :  "m-",
+        \ 'DeleteMark'         :  "dm",
+        \ 'PurgeMarks'         :  "mda",
+        \ 'PurgeMarkers'       :  "m<BS>",
+        \ 'GotoNextLineAlpha'  :  "']",
+        \ 'GotoPrevLineAlpha'  :  "'[",
+        \ 'GotoNextSpotAlpha'  :  "`]",
+        \ 'GotoPrevSpotAlpha'  :  "`[",
+        \ 'GotoNextLineByPos'  :  "]'",
+        \ 'GotoPrevLineByPos'  :  "['",
+        \ 'GotoNextSpotByPos'  :  "mn",
+        \ 'GotoPrevSpotByPos'  :  "mp",
+        \ 'GotoNextMarker'     :  "[+",
+        \ 'GotoPrevMarker'     :  "[-",
+        \ 'GotoNextMarkerAny'  :  "]=",
+        \ 'GotoPrevMarkerAny'  :  "[=",
+        \ 'ListLocalMarks'     :  "ms",
+        \ 'ListLocalMarkers'   :  "m?"
+        \ }
 
 " <<
 
@@ -276,13 +280,13 @@ set nofoldenable
 " 标签列表
 
 " 设置 tagbar 子窗口的位置出现在主编辑区的左边
-"let tagbar_left=1
+let tagbar_left=1
 " 设置显示／隐藏标签列表子窗口的快捷键。速记：identifier list by tag
-"nnoremap <Leader>lt :TagbarToggle<CR>
+nnoremap <Leader>il :TagbarToggle<CR>
 " 设置标签子窗口的宽度
-"let tagbar_width=32
+let tagbar_width=32
 " tagbar 子窗口中不显示冗余帮助信息
-"let g:tagbar_compact=1
+let g:tagbar_compact=1
 " 设置 ctags 对哪些代码标识符生成标签
 "let g:tagbar_type_c = {
 			"\ 'kinds' : [
@@ -297,37 +301,37 @@ set nofoldenable
 			"\ 'f:functions:0:0',
 			"\ ],
 			"\ }
-"let g:tagbar_type_c = {
-     "\ 'ctagstype' : 'c',
-     "\ 'kinds'     : [
-         "\ 'c:classes:0:1',
-         "\ 'e:enumerators:0:0', 
-         "\ 'f:functions:0:1',
-         "\ 'g:enumeration:0:1',
-         "\ 'm:members:0:1',
-         "\ 'n:namespaces:0:1',
-         "\ 's:structs:0:1',
-         "\ 't:typedefs:0:1',
-         "\ 'u:unions:0:1',
-         "\ 'v:global:0:1',
-         "\ 'x:external:0:1'
-     "\ ],
-     "\ 'sro'        : '::',
-     "\ 'kind2scope' : {
-         "\ 'g' : 'enum',
-         "\ 'n' : 'namespace',
-         "\ 'c' : 'class',
-         "\ 's' : 'struct',
-         "\ 'u' : 'union'
-     "\ },
-     "\ 'scope2kind' : {
-         "\ 'enum'      : 'g',
-         "\ 'namespace' : 'n',
-         "\ 'class'     : 'c',
-         "\ 'struct'    : 's',
-         "\ 'union'     : 'u'
-     "\ }
-"\ }
+let g:tagbar_type_c = {
+     \ 'ctagstype' : 'c',
+     \ 'kinds'     : [
+         \ 'c:classes:0:1',
+         \ 'e:enumerators:0:0', 
+         \ 'f:functions:0:1',
+         \ 'g:enumeration:0:1',
+         \ 'm:members:0:1',
+         \ 'n:namespaces:0:1',
+         \ 's:structs:0:1',
+         \ 't:typedefs:0:1',
+         \ 'u:unions:0:1',
+         \ 'v:global:0:1',
+         \ 'x:external:0:1'
+     \ ],
+     \ 'sro'        : '::',
+     \ 'kind2scope' : {
+         \ 'g' : 'enum',
+         \ 'n' : 'namespace',
+         \ 'c' : 'class',
+         \ 's' : 'struct',
+         \ 'u' : 'union'
+     \ },
+     \ 'scope2kind' : {
+         \ 'enum'      : 'g',
+         \ 'namespace' : 'n',
+         \ 'class'     : 'c',
+         \ 'struct'    : 's',
+         \ 'union'     : 'u'
+     \ }
+\ }
 
 "let g:tagbar_type_c = {
      "\ 'ctagstype' : 'c',
@@ -534,7 +538,7 @@ nmap <Leader>man :Man 3 <cword><CR>
 " 工程文件浏览
 
 " 使用 NERDTree 插件查看工程文件。设置快捷键，速记：file list
-nmap <Leader>fl :NERDTreeToggle<CR>
+nmap <Leader>f :NERDTreeToggle<CR>
 " 设置 NERDTree 子窗口宽度
 let NERDTreeWinSize=22
 " 设置 NERDTree 子窗口位置
@@ -573,17 +577,17 @@ set undofile
 
 " 保存快捷键
 "map <leader>ss :mksession! my.vim<cr> :wviminfo! my.viminfo<cr>
-"map <leader>ss :mksession! my.vim<cr>
+map <leader>ss :mksession! my.vim<cr>
 
 " 恢复快捷键
 "map <leader>rs :source my.vim<cr> :rviminfo my.viminfo<cr>
-"map <leader>rs :source my.vim<cr>
+map <leader>rs :source my.vim<cr>
 
 " <<
  
 " 设置快捷键实现一键编译及运行
-"nmap <Leader>m :wa<CR> :cd build/<CR> :!rm -rf main<CR> :!cmake CMakeLists.txt<CR>:make<CR><CR> :cw<CR> :cd ..<CR>
-"nmap <Leader>g :wa<CR>:cd build/<CR>:!rm -rf main<CR>:!cmake CMakeLists.txt<CR>:make<CR><CR>:cw<CR>:cd ..<CR>:!build/main<CR>
+nmap <Leader>m :wa<CR> :cd build/<CR> :!rm -rf main<CR> :!cmake CMakeLists.txt<CR>:make<CR><CR> :cw<CR> :cd ..<CR>
+nmap <Leader>g :wa<CR>:cd build/<CR>:!rm -rf main<CR>:!cmake CMakeLists.txt<CR>:make<CR><CR>:cw<CR>:cd ..<CR>:!build/main<CR>
 
 " >>
 " 快速选中结对符内的文本
@@ -598,20 +602,27 @@ set undofile
 " <<
 
 " 调用 gundo 树
-nnoremap <Leader>ud :GundoToggle<CR>
+"nnoremap <Leader>ud :GundoToggle<CR>
+"cscope plugin
+nnoremap <leader>fa :call CscopeFindInteractive(expand('<cword>'))<CR>
+nnoremap <leader>l :call ToggleLocationList()<CR>
+" s: Find this C symbol
+nnoremap  <leader>fs :call CscopeFind('s', expand('<cword>'))<CR>
+" g: Find this definition
+nnoremap  <leader>fg :call CscopeFind('g', expand('<cword>'))<CR>
+" d: Find functions called by this function
+nnoremap  <leader>fd :call CscopeFind('d', expand('<cword>'))<CR>
+" c: Find functions calling this function
+nnoremap  <leader>fc :call CscopeFind('c', expand('<cword>'))<CR>
+" t: Find this text string
+nnoremap  <leader>ft :call CscopeFind('t', expand('<cword>'))<CR>
+" e: Find this egrep pattern
+nnoremap  <leader>fe :call CscopeFind('e', expand('<cword>'))<CR>
+" f: Find this file
+nnoremap  <leader>ff :call CscopeFind('f', expand('<cword>'))<CR>
+" i: Find files #including this file
+nnoremap  <leader>fi :call CscopeFind('i', expand('<cword>'))<CR>
 
-" Disable parentheses matching depends on system. This way we should address all cases (?)
-set noshowmatch
-" NoMatchParen " This doesnt work as it belongs to a plugin, which is only loaded _after_ all files are.
-" Trying disable MatchParen after loading all plugins
-"
-function! g:FuckThatMatchParen ()
-    if exists(":NoMatchParen")
-        :NoMatchParen
-    endif
-endfunction
- 
-augroup plugin_initialize
-    autocmd!
-    autocmd VimEnter * call FuckThatMatchParen()
-augroup END
+
+"cscope dir
+"cs add /home/goodyb/coding/linux/cscope.out /home/goodyb/coding/linux/
