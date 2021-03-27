@@ -11,15 +11,15 @@ let mapleader=","
 " 开启文件类型侦测
 filetype on
 " 根据侦测到的不同类型加载对应的插件
-filetype plugin on
+filetype plugin on 
 " <<
 
 " >>
 " vim 自身（非插件）快捷键
 
 " 定义快捷键到行首和行尾
-nmap LB 0
-nmap LE $
+nmap lb ^
+nmap le g_
 
 " 设置快捷键将选中文本块复制至系统剪贴板
 vnoremap <Leader>y "+y
@@ -50,8 +50,8 @@ nnoremap <Leader>jw <C-W>j
 " 定义快捷键在结对符之间跳转
 nmap <Leader>M %
 
-inoremap <Leader>v <esc>
-cnoremap <Leader>v <esc>
+"inoremap <Leader>v <esc>
+"cnoremap <Leader>v <esc>
 " <<
 
 " 让配置变更立即生效
@@ -66,7 +66,6 @@ set incsearch
 
 " 搜索时大小写不敏感
 set ignorecase
-
 
 " vim 自身命令行模式智能补全
 set wildmenu
@@ -88,37 +87,36 @@ Plugin 'tomasr/molokai'
 Plugin 'vim-scripts/phd'
 Plugin 'Lokaltog/vim-powerline'
 Plugin 'octol/vim-cpp-enhanced-highlight'
-"Plugin 'nathanaelkane/vim-indent-guides'
 Plugin 'Yggdroot/indentLine'
 Plugin 'derekwyatt/vim-fswitch'
 Plugin 'kshenoy/vim-signature'
 Plugin 'vim-scripts/BOOKMARKS--Mark-and-Highlight-Full-Lines'
 Plugin 'majutsushi/tagbar'
-"Plugin 'vim-scripts/indexer.tar.gz'
-Plugin 'vim-scripts/DfrankUtil'
-Plugin 'vim-scripts/vimprj'
-Plugin 'dyng/ctrlsf.vim'
-Plugin 'terryma/vim-multiple-cursors'
 Plugin 'scrooloose/nerdcommenter'
-Plugin 'vim-scripts/DrawIt'
 Plugin 'SirVer/ultisnips'
 Plugin 'Valloric/YouCompleteMe'
-"Plugin 'rip-rip/clang_complete'
-Plugin 'derekwyatt/vim-protodef'
 Plugin 'scrooloose/nerdtree'
 Plugin 'fholgado/minibufexpl.vim'
 Plugin 'gcmt/wildfire.vim'
-Plugin 'sjl/gundo.vim'
 Plugin 'Lokaltog/vim-easymotion'
-Plugin 'suan/vim-instant-markdown'
 Plugin 'jiangmiao/auto-pairs'
-Plugin 'brookhong/cscope.vim'
-Plugin 'autoload_cscope.vim'
-"Plugin 'hari-rangarajan/CCTree'
-"Plugin 'lilydjwg/fcitx.vim'
-"Plugin 'ludovicchabant/vim-gutentags'
+Plugin 'basilgor/vim-autotags'
+Plugin 'ronakg/quickr-cscope.vim'
+"Plugin 'rip-rip/clang_complete'
+"Plugin 'derekwyatt/vim-protodef'
+"Plugin 'suan/vim-instant-markdown'
+"Plugin 'vim-scripts/DrawIt'
+"Plugin 'nathanaelkane/vim-indent-guides'
+"Plugin 'vim-scripts/indexer.tar.gz'
+
+"Plugin 'vim-scripts/DfrankUtil'
+"Plugin 'vim-scripts/vimprj'
+
+"Plugin 'dyng/ctrlsf.vim'
+"Plugin 'terryma/vim-multiple-cursors'
 " 插件列表结束
 call vundle#end()
+
 filetype plugin indent on
 " <<<<
 
@@ -168,8 +166,8 @@ set ruler
 set number
 
 " 高亮显示当前行/列
-set cursorline
-set cursorcolumn
+"set cursorline
+"set cursorcolumn
 
 " 高亮显示搜索结果
 set hlsearch
@@ -180,7 +178,7 @@ set hlsearch
 " 其他美化
 
 " 设置 gvim 显示字体
-set guifont=YaHei\ Consolas\ Hybrid\ 10.5
+"set guifont=YaHei\ Consolas\ Hybrid\ 10.5
 
 " 禁止折行
 set nowrap
@@ -239,14 +237,6 @@ set nofoldenable
 " <<
 
 " >>
-" 接口与实现快速切换
-
-" *.cpp 和 *.h 间切换
-nmap <silent> <Leader>sw :FSHere<cr>
-
-" <<
-
-" >>
 " 代码收藏
 
 " 自定义 vim-signature 快捷键
@@ -282,39 +272,26 @@ let g:SignatureMap = {
 " 设置 tagbar 子窗口的位置出现在主编辑区的左边
 let tagbar_left=1
 " 设置显示／隐藏标签列表子窗口的快捷键。速记：identifier list by tag
-nnoremap <Leader>il :TagbarToggle<CR>
+nnoremap <Leader>ll :TagbarToggle<CR>
 " 设置标签子窗口的宽度
 let tagbar_width=32
 " tagbar 子窗口中不显示冗余帮助信息
 let g:tagbar_compact=1
 " 设置 ctags 对哪些代码标识符生成标签
-"let g:tagbar_type_c = {
-			"\ 'kinds' : [
-			"\ 'p:prototypes:1:0',
-			"\ 'g:enums',
-			"\ 'e:enumerators:0:0',
-			"\ 't:typedefs:0:0',
-			"\ 's:structs',
-			"\ 'u:unions',
-			"\ 'm:members:0:0',
-			"\ 'v:variables:0:0',
-			"\ 'f:functions:0:0',
-			"\ ],
-			"\ }
 let g:tagbar_type_c = {
      \ 'ctagstype' : 'c',
      \ 'kinds'     : [
-         \ 'c:classes:0:1',
-         \ 'e:enumerators:0:0', 
+         "\ 'c:classes:0:1',
+         "\ 'e:enumerators:0:0', 
          \ 'f:functions:0:1',
-         \ 'g:enumeration:0:1',
-         \ 'm:members:0:1',
-         \ 'n:namespaces:0:1',
-         \ 's:structs:0:1',
-         \ 't:typedefs:0:1',
-         \ 'u:unions:0:1',
-         \ 'v:global:0:1',
-         \ 'x:external:0:1'
+         "\ 'g:enumeration:0:1',
+         "\ 'm:members:0:1',
+         "\ 'n:namespaces:0:1',
+         "\ 's:structs:0:1',
+         "\ 't:typedefs:0:1',
+         "\ 'u:unions:0:1',
+         "\ 'v:global:0:1',
+         "\ 'x:external:0:1'
      \ ],
      \ 'sro'        : '::',
      \ 'kind2scope' : {
@@ -333,77 +310,15 @@ let g:tagbar_type_c = {
      \ }
 \ }
 
-"let g:tagbar_type_c = {
-     "\ 'ctagstype' : 'c',
-     "\ 'kinds'     : [
-         "\ 'c:classes:0:1',
-         "\ 'd:macros:0:1',
-         "\ 'e:enumerators:0:0', 
-         "\ 'f:functions:0:1',
-         "\ 'g:enumeration:0:1',
-         "\ 'l:local:0:1',
-         "\ 'm:members:0:1',
-         "\ 'n:namespaces:0:1',
-         "\ 'p:functions_prototypes:0:1',
-         "\ 's:structs:0:1',
-         "\ 't:typedefs:0:1',
-         "\ 'u:unions:0:1',
-         "\ 'v:global:0:1',
-         "\ 'x:external:0:1'
-     "\ ],
-     "\ 'sro'        : '::',
-     "\ 'kind2scope' : {
-         "\ 'g' : 'enum',
-         "\ 'n' : 'namespace',
-         "\ 'c' : 'class',
-         "\ 's' : 'struct',
-         "\ 'u' : 'union'
-     "\ },
-     "\ 'scope2kind' : {
-         "\ 'enum'      : 'g',
-         "\ 'namespace' : 'n',
-         "\ 'class'     : 'c',
-         "\ 'struct'    : 's',
-         "\ 'union'     : 'u'
-     "\ }
-"\ }
 " <<
 
 " >>
 " 代码导航
- 
-" 基于标签的代码导航
-
-" 设置插件 indexer 调用 ctags 的参数
-" 默认 --c++-kinds=+p+l，重新设置为 --c++-kinds=+l+p+x+c+d+e+f+g+m+n+s+t+u+v
-" 默认 --fields=+iaS 不满足 YCM 要求，需改为 --fields=+iaSl
-"let g:indexer_ctagsCommandLineOptions="--c-kinds=+m+f+s+v --fields=+iaSl --extra"
-"let g:indexer_ctagsCommandLineOptions="-R --language-force=c --c-kinds=+m+f+s+v+p --fields=+iaSl --exclude=lib --exclude=.*  --exclude=/home/goodyb/mi_repository/miio_bt_builder/mible_common/Example_Project/* --exclude=/home/goodyb/mi_repository/miio_bt_builder/mible_common/build_dir/*  --exclude=/home/goodyb/mi_repository/miio_bt_builder/mible_common/output/*"
-"let g:indexer_ctagsWriteFilelist=1
-"let g:indexer_ctagsJustAppendTagsAtFileSave=1
-"let g:indexer_backgroundDisabled=0
-"let g:indexer_debugLogLevel=1
-"let g:indexer_disableCtagsWarning=1
-" 正向遍历同名标签
-"nmap <Leader>tn :tnext<CR>
-" 反向遍历同名标签
-"nmap <Leader>tp :tprevious<CR>
-
 " 基于语义的代码导航
 
-nnoremap <leader>jc :YcmCompleter GoToDeclaration<CR>
+"nnoremap <leader>jc :YcmCompleter GoToDeclaration<CR>
 " 只能是 #include 或已打开的文件
-nnoremap <leader>jd :YcmCompleter GoToDefinition<CR>
-
-" <<
-"let g:clang_library_path='/usr/lib/llvm-6.0/lib'
-" >>
-" 查找
-
-" 使用 ctrlsf.vim 插件在工程内全局查找光标所在关键字，设置快捷键。快捷键速记法：search in project
-nnoremap <Leader>sp :CtrlSF<CR>
-nnoremap <Leader>si :CtrlSF<space>
-"let g:ctrlsf_default_view_mode = 'compact'
+"nnoremap <leader>jd :YcmCompleter GoToDefinition<CR>
 
 " <<
 
@@ -411,8 +326,6 @@ nnoremap <Leader>si :CtrlSF<space>
 " 内容替换
 
 " 快捷替换
-let g:multi_cursor_next_key='<S-n>'
-let g:multi_cursor_skip_key='<S-k>'
 
 " 精准替换
 " 替换函数。参数说明：
@@ -519,18 +432,8 @@ let g:ycm_global_ycm_extra_conf='~/.ycm_extra_conf.py'
 " 由接口快速生成实现框架
 
 " 成员函数的实现顺序与声明顺序一致
-let g:disable_protodef_sorting=1
+"let g:disable_protodef_sorting=1
 
-" <<
-
-" >>
-" 库信息参考
- 
-" 启用:Man命令查看各类man信息
-source $VIMRUNTIME/ftplugin/man.vim
-
-" 定义:Man命令查看各类man信息的快捷键
-nmap <Leader>man :Man 3 <cword><CR>
 
 " <<
 
@@ -538,7 +441,7 @@ nmap <Leader>man :Man 3 <cword><CR>
 " 工程文件浏览
 
 " 使用 NERDTree 插件查看工程文件。设置快捷键，速记：file list
-nmap <Leader>f :NERDTreeToggle<CR>
+nmap <Leader>l :NERDTreeToggle<CR>
 " 设置 NERDTree 子窗口宽度
 let NERDTreeWinSize=22
 " 设置 NERDTree 子窗口位置
@@ -559,70 +462,22 @@ let NERDTreeAutoDeleteBuffer=1
 map <Leader>bl :MBEToggle<cr>
 
 " buffer 切换快捷键
-map <C-Tab> :MBEbn<cr>
-map <C-S-Tab> :MBEbp<cr>
+map <Leader>j :MBEbn<cr>
+map <Leader>h :MBEbp<cr>
 
-" <<
-
-
-" >>
-" 环境恢复
-
-" 设置环境保存项
-set sessionoptions="blank,globals,localoptions,tabpages,sesdir,folds,help,options,resize,winpos,winsize"
-
-" 保存 undo 历史。必须先行创建 .undo_history/
-set undodir=~/.undo_history/
-set undofile
-
-" 保存快捷键
-"map <leader>ss :mksession! my.vim<cr> :wviminfo! my.viminfo<cr>
-map <leader>ss :mksession! my.vim<cr>
-
-" 恢复快捷键
-"map <leader>rs :source my.vim<cr> :rviminfo my.viminfo<cr>
-map <leader>rs :source my.vim<cr>
-
-" <<
- 
 " 设置快捷键实现一键编译及运行
-nmap <Leader>m :wa<CR> :cd build/<CR> :!rm -rf main<CR> :!cmake CMakeLists.txt<CR>:make<CR><CR> :cw<CR> :cd ..<CR>
-nmap <Leader>g :wa<CR>:cd build/<CR>:!rm -rf main<CR>:!cmake CMakeLists.txt<CR>:make<CR><CR>:cw<CR>:cd ..<CR>:!build/main<CR>
+"nmap <Leader>m :wa<CR> :cd build/<CR> :!rm -rf main<CR> :!cmake CMakeLists.txt<CR>:make<CR><CR> :cw<CR> :cd ..<CR>
+"nmap <Leader>g :wa<CR>:cd build/<CR>:!rm -rf main<CR>:!cmake CMakeLists.txt<CR>:make<CR><CR>:cw<CR>:cd ..<CR>:!build/main<CR>
 
 " >>
 " 快速选中结对符内的文本
  
 " 快捷键
-"map <SPACE> <Plug>(wildfire-fuel)
-"vmap <S-SPACE> <Plug>(wildfire-water)
+map <SPACE> <Plug>(wildfire-fuel)
+vmap <S-SPACE> <Plug>(wildfire-water)
 
 " 适用于哪些结对符
-"let g:wildfire_objects = ["i'", 'i"', "i)", "i]", "i}", "i>", "ip"]
+let g:wildfire_objects = ["i'", 'i"', "i)", "i]", "i}", "i>", "ip"]
 
-" <<
-
-" 调用 gundo 树
-"nnoremap <Leader>ud :GundoToggle<CR>
-"cscope plugin
-nnoremap <leader>fa :call CscopeFindInteractive(expand('<cword>'))<CR>
-nnoremap <leader>l :call ToggleLocationList()<CR>
-" s: Find this C symbol
-nnoremap  <leader>fs :call CscopeFind('s', expand('<cword>'))<CR>
-" g: Find this definition
-nnoremap  <leader>fg :call CscopeFind('g', expand('<cword>'))<CR>
-" d: Find functions called by this function
-nnoremap  <leader>fd :call CscopeFind('d', expand('<cword>'))<CR>
-" c: Find functions calling this function
-nnoremap  <leader>fc :call CscopeFind('c', expand('<cword>'))<CR>
-" t: Find this text string
-nnoremap  <leader>ft :call CscopeFind('t', expand('<cword>'))<CR>
-" e: Find this egrep pattern
-nnoremap  <leader>fe :call CscopeFind('e', expand('<cword>'))<CR>
-" f: Find this file
-nnoremap  <leader>ff :call CscopeFind('f', expand('<cword>'))<CR>
-" i: Find files #including this file
-nnoremap  <leader>fi :call CscopeFind('i', expand('<cword>'))<CR>
-
-
-"cscope dir
-"cs add /home/goodyb/coding/linux/cscope.out /home/goodyb/coding/linux/
+let g:quickr_cscope_autoload_db = 0
+let g:quickr_cscope_use_qf_g = 1
