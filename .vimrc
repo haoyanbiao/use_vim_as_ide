@@ -18,8 +18,8 @@ filetype plugin on
 " vim 自身（非插件）快捷键
 
 " 定义快捷键到行首和行尾
-nmap lb ^
-nmap le g_
+"nmap lb ^
+"nmap le g_
 
 " 设置快捷键将选中文本块复制至系统剪贴板
 vnoremap <Leader>y "+y
@@ -98,7 +98,7 @@ Plugin 'Valloric/YouCompleteMe'
 Plugin 'scrooloose/nerdtree'
 Plugin 'fholgado/minibufexpl.vim'
 Plugin 'gcmt/wildfire.vim'
-Plugin 'Lokaltog/vim-easymotion'
+"Plugin 'Lokaltog/vim-easymotion'
 Plugin 'jiangmiao/auto-pairs'
 Plugin 'basilgor/vim-autotags'
 Plugin 'ronakg/quickr-cscope.vim'
